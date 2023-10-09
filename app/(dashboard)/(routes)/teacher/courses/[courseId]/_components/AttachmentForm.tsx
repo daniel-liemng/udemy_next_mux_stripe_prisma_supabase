@@ -57,7 +57,7 @@ const AttachmentForm: React.FC<AttachmentFormProps> = ({
     try {
       setDeletingId(id);
 
-      await axios.delete(`/api/courses/${courseId}/attchments/${id}`);
+      await axios.delete(`/api/courses/${courseId}/attachments/${id}`);
 
       toast.success('Attachment Deleted');
       router.refresh();

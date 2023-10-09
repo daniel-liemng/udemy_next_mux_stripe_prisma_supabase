@@ -9,7 +9,6 @@ export const DELETE = async (
   try {
     const { userId } = auth();
     const { courseId, attachmentId } = params;
-    const { url } = await req.json();
 
     if (!userId) {
       return new NextResponse('Unauthorized', { status: 401 });
