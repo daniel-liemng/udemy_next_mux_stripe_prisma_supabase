@@ -19,6 +19,7 @@ import { Pencil } from 'lucide-react';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Textarea } from '@/components/ui/textarea';
+import { Course } from '@prisma/client';
 
 const formSchema = z.object({
   description: z.string().min(1, {
@@ -27,9 +28,7 @@ const formSchema = z.object({
 });
 
 interface DescriptionFormProps {
-  initialData: {
-    description: string;
-  };
+  initialData: Course;
   courseId: string;
 }
 
@@ -48,7 +47,7 @@ const DescriptionForm: React.FC<DescriptionFormProps> = ({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      description: initialData.description || '',
+      description: initialData?.description || '',
     },
   });
 
