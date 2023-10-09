@@ -37,15 +37,6 @@ const AttachmentForm: React.FC<AttachmentFormProps> = ({
     setIsEditing((prev) => !prev);
   };
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      url: initialData?.attachments?.url || '',
-    },
-  });
-
-  const { isSubmitting, isValid } = form.formState;
-
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const { data } = await axios.post(
