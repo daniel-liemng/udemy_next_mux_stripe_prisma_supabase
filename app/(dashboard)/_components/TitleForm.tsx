@@ -55,6 +55,7 @@ const TitleForm: React.FC<TitleFormProps> = ({ initialData, courseId }) => {
     try {
       const { data } = await axios.patch(`/api/courses/${courseId}`, values);
       toast.success('Course Updated');
+      toggleEdit();
       router.refresh();
     } catch (err) {
       console.log(err);
