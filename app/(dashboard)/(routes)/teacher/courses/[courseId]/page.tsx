@@ -1,4 +1,5 @@
-import TitleForm from '@/app/(dashboard)/_components/TitleForm';
+import DescriptionForm from '@/app/(dashboard)/(routes)/teacher/courses/[courseId]/_components/DescriptionForm';
+import TitleForm from '@/app/(dashboard)/(routes)/teacher/courses/[courseId]/_components/TitleForm';
 import IconBadge from '@/components/shared/IconBadge';
 import { db } from '@/lib/db';
 import { auth } from '@clerk/nextjs';
@@ -54,6 +55,7 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
           </div>
 
           <TitleForm initialData={course} courseId={course.id} />
+          <DescriptionForm initialData={course} courseId={course.id} />
         </div>
       </div>
     </div>

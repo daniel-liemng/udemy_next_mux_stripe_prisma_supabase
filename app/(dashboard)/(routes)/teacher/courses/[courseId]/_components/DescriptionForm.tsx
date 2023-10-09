@@ -14,26 +14,29 @@ import {
   FormItem,
   FormMessage,
 } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import Link from 'next/link';
 import { toast } from 'react-hot-toast';
 import { Pencil } from 'lucide-react';
 import { useState } from 'react';
+import { cn } from '@/lib/utils';
+import { Textarea } from '@/components/ui/textarea';
 
 const formSchema = z.object({
-  title: z.string().min(1, {
-    message: 'Title is required.',
+  description: z.string().min(1, {
+    message: 'Description is required.',
   }),
 });
 
-interface TitleFormProps {
+interface DescriptionFormProps {
   initialData: {
-    title: string;
+    description: string;
   };
   courseId: string;
 }
 
-const TitleForm: React.FC<TitleFormProps> = ({ initialData, courseId }) => {
+const DescriptionForm: React.FC<DescriptionFormProps> = ({
+  initialData,
+  courseId,
+}) => {
   const router = useRouter();
 
   const [isEditing, setIsEditing] = useState(false);
@@ -44,14 +47,14 @@ const TitleForm: React.FC<TitleFormProps> = ({ initialData, courseId }) => {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: initialData,
+    defaultValues: {
+      description: initialData.description || '',
+    },
   });
 
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
-
     try {
       const { data } = await axios.patch(`/api/courses/${courseId}`, values);
       toast.success('Course Updated');
@@ -66,20 +69,29 @@ const TitleForm: React.FC<TitleFormProps> = ({ initialData, courseId }) => {
   return (
     <div className='mt-6 bg-slate-100 rounded-md p-4'>
       <div className='flex items-center justify-between font-medium'>
-        Course title
+        Course description
         <Button variant='ghost' onClick={toggleEdit}>
           {isEditing ? (
             <>Cancel</>
           ) : (
             <>
               <Pencil className='h-4 w-4 mr-2' />
-              Edit title
+              Edit description
             </>
           )}
         </Button>
       </div>
 
-      {!isEditing && <p className='text-sm mt-2'>{initialData.title}</p>}
+      {!isEditing && (
+        <p
+          className={cn(
+            'text-sm mt-2',
+            !initialData.description && 'text-slate-500 italic'
+          )}
+        >
+          {initialData.description || 'No description'}
+        </p>
+      )}
 
       {isEditing && (
         <Form {...form}>
@@ -89,12 +101,12 @@ const TitleForm: React.FC<TitleFormProps> = ({ initialData, courseId }) => {
           >
             <FormField
               control={form.control}
-              name='title'
+              name='description'
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input
-                      placeholder='e.g. Advanced Web Development'
+                    <Textarea
+                      placeholder="e.g. 'This course is about...'"
                       {...field}
                       disabled={isSubmitting}
                     />
@@ -119,4 +131,4 @@ const TitleForm: React.FC<TitleFormProps> = ({ initialData, courseId }) => {
   );
 };
 
-export default TitleForm;
+export default DescriptionForm;
