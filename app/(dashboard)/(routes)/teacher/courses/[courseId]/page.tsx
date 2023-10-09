@@ -6,6 +6,7 @@ import { auth } from '@clerk/nextjs';
 import { LayoutDashboard } from 'lucide-react';
 import { redirect } from 'next/navigation';
 import ImageForm from './_components/ImageForm';
+import CategoryForm from './_components/CategoryForm';
 
 const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
   const { userId } = auth();
@@ -64,6 +65,14 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
           <TitleForm initialData={course} courseId={course.id} />
           <DescriptionForm initialData={course} courseId={course.id} />
           <ImageForm initialData={course} courseId={course.id} />
+          <CategoryForm
+            initialData={course}
+            courseId={course.id}
+            options={categories.map((cat) => ({
+              label: cat.name,
+              value: cat.id,
+            }))}
+          />
         </div>
       </div>
     </div>
